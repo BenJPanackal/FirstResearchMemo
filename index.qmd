@@ -1,0 +1,63 @@
+---
+title: "An analysis in difference of petal length between Setosa and Versicolour Iris species"
+---
+__Researcher:__ Benjamin Panckal    
+
+__Date:__ 9/16/2026
+
+__Research Question:__ Is there a difference in the petal length of Iris Setosa and Iris Versicolour?
+
+
+__Answer, Response, + Summary of Results:__ Yes, Iris Versicolour have a longer petal length than Iris Setosa.
+
+Import Block
+``` {python}
+#| echo: true
+
+import pandas as pd
+import numpy as np
+
+import statsmodels.api as sm
+
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+from IPython.display import display, Markdown
+
+from ucimlrepo import fetch_ucirepo
+
+```
+
+``` {python}
+iris = sns.load_dataset('iris')
+iris['species'].value_counts()
+iris.groupby('species').describe()['petal_length'].transpose()
+iris = iris[iris['species'] != 'virginica']
+iris['species'].value_counts()
+iris['isSetosa'] = (iris['species'] == 'setosa') * 1
+pd.crosstab(iris['isSetosa'], iris['species'])
+X = iris['isSetosa']
+X = sm.add_constant(X)
+
+y = iris['petal_length']
+
+ols = sm.OLS(y, X)
+ols_fit = ols.fit()
+
+print(ols_fit.summary())
+
+sns.violinplot(data=iris, y = 'species', x='petal_length', orient = 'h')
+```
+
+Since the p value is less than our Alpha Significance level of .05, we can conclude the results did not likely occur due to chance.
+Thus, we conclude that Iris Versicolour have a longer petal length than Iris Setosa
+
+
+__Questions and Uncertanties:__ 
+Was the soil fertility of the two species equal?
+Was the petal width also signicantly different?
+
+__Next Steps:__ 
+Explain the significance of the results.
+Verify the validity of our data; see how the researchers gathered their data and if it was through random sampling. 
+Search for possible causes of this size discrepancy.
