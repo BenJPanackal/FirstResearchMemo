@@ -191,9 +191,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>Research Question:</strong> Is there a difference in the petal length of Iris Setosa and Iris Versicolour?</p>
 <p><strong>H0:</strong> There is no difference in the petal length of Iris Setosa and Iris Versicolour</p>
 <p><strong>HA:</strong> There is some difference in the petal length of Iris Setosa and Iris Versicolour</p>
-<p><strong>Answer, Response, + Summary of Results:</strong> Yes, Iris Versicolour have a longer petal length than Iris Setosa.</p>
+<p><strong>Answer, Response, + Summary of Results:</strong> Yes, Iris Versicolour have a longer petal length than Iris Setosa. We know this because we performed a 2 Sample t-Test on the means of both species and found a p value less than our alpha value of .05. We also visualized this with a violin plot to see a noticeable difference in petal length.</p>
 <p>Import Block</p>
-<div id="ee3dc33c" class="cell" data-execution_count="1">
+<div id="1938a78e" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a> </span>
@@ -207,7 +207,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ucimlrepo <span class="im">import</span> fetch_ucirepo</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Load the data and count each species</p>
-<div id="cee1dcdf" class="cell" data-execution_count="2">
+<div id="955fb696" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>iris <span class="op">=</span> sns.load_dataset(<span class="st">'iris'</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>display(Markdown(iris[<span class="st">'species'</span>].value_counts().to_frame().to_markdown()))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display cell-output-markdown">
@@ -236,7 +236,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Summary statistics of petal length by species</p>
-<div id="d620a33f" class="cell" data-execution_count="3">
+<div id="7611df78" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>display(Markdown(iris.groupby(<span class="st">'species'</span>).describe()[<span class="st">'petal_length'</span>].transpose().to_markdown()))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display cell-output-markdown">
 <table class="caption-top table table-sm table-striped small">
@@ -302,7 +302,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Remove Virginica and confirm only two species remain</p>
-<div id="bbad1272" class="cell" data-execution_count="4">
+<div id="6e6b45a5" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>iris <span class="op">=</span> iris[iris[<span class="st">'species'</span>] <span class="op">!=</span> <span class="st">'virginica'</span>].copy()</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>display(Markdown(iris[<span class="st">'species'</span>].value_counts().to_frame().to_markdown()))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display cell-output-markdown">
@@ -327,7 +327,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Create the isSetosa indicator variable and check it</p>
-<div id="1a064702" class="cell" data-execution_count="5">
+<div id="9de05108" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>iris[<span class="st">'isSetosa'</span>] <span class="op">=</span> (iris[<span class="st">'species'</span>] <span class="op">==</span> <span class="st">'setosa'</span>) <span class="op">*</span> <span class="dv">1</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>display(Markdown(pd.crosstab(iris[<span class="st">'isSetosa'</span>], iris[<span class="st">'species'</span>]).to_markdown()))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display cell-output-markdown">
@@ -355,7 +355,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Set up and fit the OLS model</p>
-<div id="c446e4f7" class="cell" data-execution_count="6">
+<div id="7f1cbf9d" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> iris[<span class="st">'isSetosa'</span>]</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> sm.add_constant(X)</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a> </span>
@@ -365,7 +365,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>ols_fit <span class="op">=</span> ols.fit()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Regression results</p>
-<div id="61a4c44a" class="cell" data-execution_count="7">
+<div id="79173dcb" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ols_fit.summary())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                            OLS Regression Results                            
@@ -374,7 +374,7 @@ Dep. Variable:           petal_length   R-squared:                       0.941
 Model:                            OLS   Adj. R-squared:                  0.940
 Method:                 Least Squares   F-statistic:                     1560.
 Date:                Wed, 30 Sep 2026   Prob (F-statistic):           5.40e-62
-Time:                        12:14:22   Log-Likelihood:                -37.106
+Time:                        12:18:06   Log-Likelihood:                -37.106
 No. Observations:                 100   AIC:                             78.21
 Df Residuals:                      98   BIC:                             83.42
 Df Model:                           1                                         
@@ -396,7 +396,7 @@ Notes:
 </div>
 </div>
 <p>Violin plot of petal length by species</p>
-<div id="cfc8d70e" class="cell" data-execution_count="8">
+<div id="b6e88126" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>sns.violinplot(data<span class="op">=</span>iris, y <span class="op">=</span> <span class="st">'species'</span>, x<span class="op">=</span><span class="st">'petal_length'</span>, orient <span class="op">=</span> <span class="st">'h'</span>)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
