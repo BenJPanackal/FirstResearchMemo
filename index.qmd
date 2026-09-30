@@ -1,9 +1,8 @@
 ---
 title: "An analysis in difference of petal length between Setosa and Versicolour Iris species"
+author: Benjamin Panackal
+date: 2026-09-30
 ---
-__Researcher:__ Benjamin Panckal    
-
-__Date:__ 9/16/2026
 
 __Research Question:__ Is there a difference in the petal length of Iris Setosa and Iris Versicolour?
 
@@ -13,41 +12,66 @@ __Answer, Response, + Summary of Results:__ Yes, Iris Versicolour have a longer 
 Import Block
 ``` {python}
 #| echo: true
-
+ 
 import pandas as pd
 import numpy as np
-
+ 
 import statsmodels.api as sm
-
+ 
 import seaborn as sns
 import matplotlib.pyplot as plt
-
+ 
 from IPython.display import display, Markdown
-
+ 
 from ucimlrepo import fetch_ucirepo
-
+ 
 ```
-
+ 
+Load the data and count each species
 ``` {python}
 iris = sns.load_dataset('iris')
-iris['species'].value_counts()
-iris.groupby('species').describe()['petal_length'].transpose()
-iris = iris[iris['species'] != 'virginica']
-iris['species'].value_counts()
+display(Markdown(iris['species'].value_counts().to_frame().to_markdown()))
+```
+ 
+Summary statistics of petal length by species
+``` {python}
+display(Markdown(iris.groupby('species').describe()['petal_length'].transpose().to_markdown()))
+```
+ 
+Remove Virginica and confirm only two species remain
+``` {python}
+iris = iris[iris['species'] != 'virginica'].copy()
+display(Markdown(iris['species'].value_counts().to_frame().to_markdown()))
+```
+ 
+Create the isSetosa indicator variable and check it
+``` {python}
 iris['isSetosa'] = (iris['species'] == 'setosa') * 1
-pd.crosstab(iris['isSetosa'], iris['species'])
+display(Markdown(pd.crosstab(iris['isSetosa'], iris['species']).to_markdown()))
+```
+ 
+Set up and fit the OLS model
+``` {python}
 X = iris['isSetosa']
 X = sm.add_constant(X)
-
+ 
 y = iris['petal_length']
-
+ 
 ols = sm.OLS(y, X)
 ols_fit = ols.fit()
-
-print(ols_fit.summary())
-
-sns.violinplot(data=iris, y = 'species', x='petal_length', orient = 'h')
 ```
+ 
+Regression results
+``` {python}
+print(ols_fit.summary())
+```
+ 
+Violin plot of petal length by species
+``` {python}
+sns.violinplot(data=iris, y = 'species', x='petal_length', orient = 'h')
+plt.show()
+```
+
 
 Since the p value is less than our Alpha Significance level of .05, we can conclude the results did not likely occur due to chance.
 Thus, we conclude that Iris Versicolour have a longer petal length than Iris Setosa
