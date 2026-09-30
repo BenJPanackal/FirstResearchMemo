@@ -7,6 +7,10 @@ date: 2026-09-30
 __Research Question:__ Is there a difference in the petal length of Iris Setosa and Iris Versicolour?
 
 
+**H0:** There is no difference in the petal length of Iris Setosa and Iris Versicolour
+
+**HA:** There is some difference in the petal length of Iris Setosa and Iris Versicolour
+
 __Answer, Response, + Summary of Results:__ Yes, Iris Versicolour have a longer petal length than Iris Setosa.
 
 Import Block
